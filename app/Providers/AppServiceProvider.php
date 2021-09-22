@@ -11,6 +11,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
+
     public function register()
     {
         //
@@ -23,13 +24,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if(config('app.env') === 'development') {
+            \URL::forceScheme('https');
+        }
+        
         Response::macro('success', function($data){
             return response()->json([
                 'success' => true,
                 'data' => $data,
             ]);
         });
-        
+
         Response::macro('error', function($data, $status_code){
             return response()->json([
                 'success' => false,
